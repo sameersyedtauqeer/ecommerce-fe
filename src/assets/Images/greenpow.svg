@@ -1,0 +1,9 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 14" width="16" height="14">
+	<title>New Project</title>
+	<defs>
+		<image  width="16" height="14" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAOCAMAAAAR8Wy4AAAAAXNSR0IB2cksfwAAATJQTFRFAAAA3O7gYrhxNKNEodSpW7NpEZUnEZMmD5Mm2urdkMqXcL+A3/HjFpQpEpIlEpEocb9/EpEmEJQkLJ9A3e/fUrBiXbdt6PbrOqdKEJImEpUlHZgwEZMnDpQlE5Ip5vLmQ6lTEJMjSatYrNi1HZoyEpQoTrBdJZk0I5oyOKNGD5UmEJQmG5kuGJgpK54/ut++mNKilM+f5vTlhcWREZUoTq9eEpQqFJMqbr17WbNpE5MkXLRqrNmygseOPqdSE5MmZLdvEpQnEJQnEJIoMKJCgsaNE5InEJIlEpIjEJMpD5IoJ546fMOL1O3XFpUqD5QnEZMpJJw4aLt1jcuYYbduFJIniMiME5MiDpMmUrBkZbhwjsqW6PTmZrl1MqFDT61fecOGnNKhcrx9P6lRIZk1fMOHTwZJrQAAAGZ0Uk5TAP//////////////4f///4f///////9Z/////////3j///////////////////////+H//////////////////////////////////////////////////////94////////////UyBczQAAAMdJREFUeJxjYAACRiZmFgZkwMrGzsHJwMXNAxPg5WPnZxAQFBIGcURExcQl2CWlGKRlZOXkgQIKivxKyiqqagzqbBwaIBWaWto6EI26evoGhkYMxuwmpgyiZlrmFgwMluxW1gwMNrYMdvbs9uzsDgyOTs4uILWubu4enl5W9gzeTjI+QL6vnz87u32AtmIgQ1AwSEGItrYkv4yQu0xoGMR0PadwGXcnIUnViEiIQJSJDHuAu4yUm1M0RCAmNi4+ITEpOSUVxAMAxOkafLpD5NoAAAAASUVORK5CYII="/>
+	</defs>
+	<style>
+	</style>
+	<use id="Layer 1" href="#img1" x="0" y="0"/>
+</svg>
