@@ -30,41 +30,62 @@ import profile from "../../assets/Images/r-img1.png";
 // import useMaster from "./Hooks/useAccountMaster";
 import "../../assets/css/sidebar.css";
 import { logout } from "../../Redux/Slices/authSlice";
-import { fetchData, putData } from "../../ApiConstant/api";
+import { REACT_APP_PUSHER_KEY, fetchData, putData } from "../../ApiConstant/api";
+import Pusher from "pusher-js";
+
+
 
 const AdminLayout = () => {
     // const { themes } = useSelector((state) => state.themeReducer);
     // const { user } = useSelector((state) => state.authReducer);
     // const { token } = useSelector((state) => state.auth);
+
+    const [showDropdown, setShowDropdown] = useState(false);
+    const handleDropdownSelect = (eventKey, event) => {
+        setShowDropdown(false);
+    };
+
     const [notifi, setNotifi] = useState([]);
-    const [status, setStatus] = useState("");
+    const [refresh, setRefresh] = useState(false);
 
     const handleNotification = () => {
         fetchData("notification")
             .then((res) => {
+                setRefresh(!refresh)
                 setNotifi(res?.data)
             })
-    }
-
-    const handleUpdateStatus = (event) => {
-        event.preventDefault();
-        const data = { orderStatus: status }
-        putData("notification", data)
-            .then((result) => {
-                // setEditValue("")
-                // setShow(false)
-                // setRefresh(!refresh)
-                // toast.success(result?.message)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-
     }
 
     useEffect(() => {
         handleNotification();
     }, [])
+
+    useEffect(() => {
+
+        const pusher = new Pusher(REACT_APP_PUSHER_KEY, {
+            cluster: 'ap2'
+
+        })
+
+        const channel = pusher.subscribe("my-channel")
+        channel.bind('my-event', function (data) {
+            // console.log(" pusher data ----- ", data)
+            // alert(JSON.stringify(data));
+            handleNotification()
+
+        });
+
+
+        // …
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+
+    const unreadObjects = notifi.filter(item => item.is_read === false);
+
+    const unreadCount = unreadObjects.length;
+
+    console.log("unreadCount ========== ", unreadCount)
 
     console.log("notifi ====== ", notifi)
 
@@ -426,25 +447,28 @@ const AdminLayout = () => {
                       </div>
                     </div>
                   </li> */}
-
-                                    <Dropdown className="nav-item dropdown dropdown-large notification-dropdown">
+                                    <Dropdown
+                                        className="nav-item dropdown dropdown-large notification-dropdown"
+                                    >
                                         <Dropdown.Toggle
                                             as={NavLink}
-                                            className="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative "
-
+                                            className="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative"
                                         >
-                                            <span className="alert-count">7</span>
+
+                                            {unreadCount > 0 && (
+                                                <span className="alert-count">{unreadCount}</span>
+                                            )}
+
                                             <BiBell />
                                         </Dropdown.Toggle>
-                                        <Dropdown.Menu className="dropdown-menu dropdown-menu-end">
-                                            <a href="!#">
-                                                <div className="msg-header">
-                                                    <p className="msg-header-title">Notifications</p>
-                                                    <p className="msg-header-clear ms-auto">
-                                                        Marks all as read
-                                                    </p>
-                                                </div>
-                                            </a>
+                                        <Dropdown.Menu className="dropdown-menu dropdown-menu-end"
+                                        >
+                                            <div className="msg-header">
+                                                <p className="msg-header-title">Notifications</p>
+                                                <p className="msg-header-clear ms-auto">
+                                                    Marks all as read
+                                                </p>
+                                            </div>
                                             <div className="header-notifications-list overflow-auto">
 
                                                 {Array.isArray(notifi) && notifi.length > 0 ? (
@@ -453,11 +477,7 @@ const AdminLayout = () => {
                                                             <>
                                                                 <Link key={index} to={`/orders-detail/${items?.order_id}/${items?._id}`} className={`dropdown-item ${items?.is_read ? "" : "bg-light"}`} >
                                                                     <div className={`d-flex py-1 align-items-center`}>
-                                                                        {/* <div className="notify">
-                                                            <i className="bx bx-group" />
-                                                        </div> */}
                                                                         <div className="flex-grow-1">
-
                                                                             <h6 className="msg-name text-secondary">
                                                                                 {items?.title}
                                                                                 <span className="msg-time float-end text-secondary">
@@ -465,9 +485,12 @@ const AdminLayout = () => {
                                                                                 </span>
                                                                             </h6>
                                                                             {/* <p className="msg-info text-secondary">#10201</p> */}
-                                                                            <p className="msg-info text-secondary">
-                                                                                {items?.address}
-                                                                            </p>
+                                                                            <div style={{ whiteSpace: "normal" }}>
+
+                                                                                <p className="msg-info text-secondary">
+                                                                                    {items?.address}
+                                                                                </p>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </Link>
@@ -479,23 +502,6 @@ const AdminLayout = () => {
                                                         No Notification Found
                                                     </>}
 
-
-                                                {/* <a className="dropdown-item" href="javascript:;">
-                                                    <div className="d-flex py-1 align-items-center">
-                                                       
-                                                        <div className="flex-grow-1">
-
-                                                            <h6 className="msg-name text-secondary">
-                                                                New Customers
-                                                                <span className="msg-time float-end text-secondary">
-                                                                    #10201
-                                                                </span>
-                                                            </h6>
-                                                            <p className="msg-info text-secondary">1 j gulshan-e-iqbal sector 2</p>
-                                                        </div>
-                                                    </div>
-                                                </a> */}
-
                                             </div>
                                             <a href="javascript:;">
                                                 <div className="text-center msg-footer bg-dark">
@@ -505,7 +511,9 @@ const AdminLayout = () => {
                                         </Dropdown.Menu>
                                     </Dropdown>
 
-                                    <Dropdown className="nav-item dropdown dropdown-large">
+
+
+                                    {/* <Dropdown className="nav-item dropdown dropdown-large">
                                         <Dropdown.Toggle
                                             as={NavLink}
                                             className="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative"
@@ -776,7 +784,7 @@ const AdminLayout = () => {
                                                 </div>
                                             </a>
                                         </Dropdown.Menu>
-                                    </Dropdown>
+                                    </Dropdown> */}
                                 </ul>
                             </div>
 

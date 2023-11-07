@@ -1,5 +1,5 @@
 import React from 'react'
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -18,7 +18,7 @@ import { removeAllCart } from '../../Redux/Slices/cartSlice';
 const Layout = () => {
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const { token, user } = useSelector((state) => state.auth)
 
     console.log("token ========= ", token)
@@ -26,6 +26,8 @@ const Layout = () => {
     const handleLogout = () => {
         dispatch(removeAllCart())
         dispatch(logout())
+        navigate("/")
+
     }
 
     const location = useLocation()

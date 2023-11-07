@@ -2,6 +2,9 @@ export const baseUrl = 'http://localhost:5000/api/'
 
 export const category = 'category'
 
+export const REACT_APP_PUSHER_KEY = "5f55ea6a3a8ec02183d2"
+
+
 // function to make GET request
 
 export const fetchData = async (url) => {

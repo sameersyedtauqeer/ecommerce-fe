@@ -2,18 +2,35 @@ import React, { useEffect, useState } from 'react'
 import Table from 'react-bootstrap/Table';
 import { getSingleOrder, getSingleProduct, putData } from '../../ApiConstant/api';
 import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2'
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+})
 
 const OrderDetailScreen = () => {
   const { id, notificationId } = useParams();
   const [data, setData] = useState(null)
-  const [status, setStatus] = useState("")
+  const [refresh, setRefresh] = useState(false)
 
   console.log("notificationId =====", notificationId)
   const handleStatus = (orderStatus) => {
     const obj = { orderStatus }
     putData(`order/${id}`, obj)
       .then((result) => {
-        alert(result?.message)
+        Toast.fire({
+          icon: 'success',
+          title: result?.message
+        })
+        setRefresh(!refresh)
       })
 
   }
@@ -21,7 +38,7 @@ const OrderDetailScreen = () => {
   const getDetails = () => {
     let url = `order/${id}`;
     console.log('url=========', url)
-    if(notificationId != undefined){
+    if (notificationId != undefined) {
       url = `order/${id}/${notificationId}`;
     }
     getSingleOrder(url)
@@ -32,7 +49,7 @@ const OrderDetailScreen = () => {
 
   useEffect(() => {
     getDetails()
-  }, [id, notificationId])
+  }, [id, notificationId, refresh])
 
   // console.log("data ========== ", data)
 
@@ -203,10 +220,10 @@ const OrderDetailScreen = () => {
 
                     <select onChange={(e) => handleStatus(e.target.value)} class="form-select" aria-label="Default select example">
                       <option value="Pending" selected={data?.orderStatus == "Pending"}>Pending</option>
-                      <option value="confirmed" selected={data?.orderStatus == "confirmed"}>Confirmed</option>
-                      <option value="processing" selected={data?.orderStatus == "processing"}>Processing</option>
-                      <option value="outForDelivery" selected={data?.orderStatus == "outForDelivery"}>Out For Delivery</option>
-                      <option value="delivered" selected={data?.orderStatus == "delivered"}>Delivered</option>
+                      <option value="Confirmed" selected={data?.orderStatus == "Confirmed"}>Confirmed</option>
+                      <option value="Processing" selected={data?.orderStatus == "Processing"}>Processing</option>
+                      <option value="Out For Delivery" selected={data?.orderStatus == "Out For Delivery"}>Out For Delivery</option>
+                      <option value="Delivered" selected={data?.orderStatus == "Delivered"}>Delivered</option>
                     </select>
 
                   </div>

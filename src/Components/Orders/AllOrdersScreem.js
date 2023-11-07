@@ -3,6 +3,7 @@ import Table from 'react-bootstrap/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOrder } from '../../Redux/Slices/orderSlice';
 import { BsEye, BsEyeFill, BsFillTrash3Fill, BsPencilSquare } from 'react-icons/bs';
+import { TbLayoutKanban } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
 
 
@@ -19,9 +20,21 @@ const AllOrdersScreem = () => {
     return (
         <>
 
-            <h5 className='fw-600 mb-4'>
-                Orders
-            </h5>
+            <div className="row">
+                <div className="col">
+
+                    <h5 className='fw-600 mb-4'>
+                        Orders
+                    </h5>
+                </div>
+
+                <div className="col-auto">
+                    <Link to={"/kanban"} className='btn btn-light'>
+                        <TbLayoutKanban size={22}/>
+
+                    </Link>
+                </div>
+            </div>
             <Table striped bordered hover>
                 <thead>
                     <tr>
